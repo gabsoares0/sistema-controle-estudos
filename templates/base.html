@@ -5,126 +5,291 @@
     <title>Sistema de Controle de Estudos</title>
 
     <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #4b5563;
+            --danger: #dc2626;
+            --danger-dark: #b91c1c;
+            --background: #eef2ff;
+            --surface: #ffffff;
+            --text: #111827;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --radius: 16px;
+            --shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f6f8;
+            background:
+                radial-gradient(circle at top left, #dbeafe, transparent 35%),
+                radial-gradient(circle at top right, #ede9fe, transparent 35%),
+                #f8fafc;
             margin: 0;
             padding: 0;
+            color: var(--text);
         }
 
         header {
-            background-color: #1f2937;
+            background: linear-gradient(135deg, #111827, #1e3a8a);
             color: white;
-            padding: 20px;
-            text-align: center;
+            padding: 28px 8%;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.25);
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-size: 28px;
+            letter-spacing: -0.5px;
+        }
+
+        .brand p {
+            margin: 6px 0 0;
+            color: #dbeafe;
+            font-size: 14px;
+        }
+
+        nav {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.12);
+            padding: 10px 14px;
+            border-radius: 999px;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.22);
+            transform: translateY(-1px);
         }
 
         main {
-            width: 80%;
+            width: 84%;
+            max-width: 1180px;
             margin: 40px auto;
-            background-color: white;
-            padding: 30px;
-            border-radius: 8px;
+            background-color: var(--surface);
+            padding: 34px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            animation: fadeIn 0.35s ease-in-out;
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 28px;
+            letter-spacing: -0.4px;
+        }
+
+        h3 {
+            color: #1f2937;
+        }
+
+        p {
+            line-height: 1.6;
+            color: #374151;
         }
 
         a {
-            color: #2563eb;
+            color: var(--primary);
             text-decoration: none;
             font-weight: bold;
         }
 
         .button {
-            display: inline-block;
-            background-color: #2563eb;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--primary);
             color: white;
-            padding: 10px 15px;
-            border-radius: 5px;
+            padding: 11px 16px;
+            border-radius: 10px;
             margin-top: 15px;
+            border: none;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+            transition: 0.2s;
+            box-shadow: 0 8px 18px rgba(37, 99, 235, 0.22);
         }
 
-                form {
+        .button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 12px 22px rgba(37, 99, 235, 0.28);
+        }
+
+        .secondary {
+            background-color: var(--secondary);
+            box-shadow: none;
+        }
+
+        .secondary:hover {
+            background-color: #374151;
+        }
+
+        .danger {
+            background-color: var(--danger);
+            box-shadow: none;
+        }
+
+        .danger:hover {
+            background-color: var(--danger-dark);
+        }
+
+        form {
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
 
-        input, textarea, select {
-            padding: 10px;
-            border: 1px solid #d1d5db;
-            border-radius: 5px;
-            font-size: 16px;
+        label {
+            font-weight: bold;
+            color: #374151;
+            margin-top: 8px;
         }
 
-        button {
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
+        input, textarea, select {
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 15px;
+            outline: none;
+            transition: 0.2s;
+            background-color: #f9fafb;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: var(--primary);
+            background-color: white;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 15px;
+            margin-top: 18px;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 0 0 1px var(--border);
         }
 
         th, td {
-            border: 1px solid #d1d5db;
-            padding: 10px;
+            border-bottom: 1px solid var(--border);
+            padding: 13px;
             text-align: left;
+            vertical-align: top;
         }
 
         th {
             background-color: #f3f4f6;
+            color: #374151;
+            font-size: 14px;
+        }
+
+        tr:hover td {
+            background-color: #f9fafb;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
         }
 
         hr {
-            margin: 30px 0;
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 32px 0;
         }
 
-                .cards {
+        .cards {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            margin-top: 20px;
+            gap: 16px;
+            margin-top: 22px;
         }
 
         .card {
-            background-color: #f9fafb;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            padding: 20px;
+            background: linear-gradient(180deg, #ffffff, #f8fafc);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px;
             text-align: center;
+            transition: 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(15, 23, 42, 0.08);
         }
 
         .card h3 {
-            font-size: 32px;
+            font-size: 34px;
             margin: 0;
-            color: #1f2937;
+            color: var(--primary);
         }
 
         .card p {
             margin: 8px 0 0;
-            color: #4b5563;
+            color: var(--muted);
+            font-size: 14px;
         }
 
-            .danger {
-            background-color: #dc2626;
+        .progress-section {
+            margin-top: 30px;
+            background: linear-gradient(135deg, #eff6ff, #f5f3ff);
+            border: 1px solid #dbeafe;
+            border-radius: 16px;
+            padding: 24px;
         }
 
-        .danger:hover {
-            background-color: #b91c1c;
+        .progress-bar {
+            width: 100%;
+            background-color: #e5e7eb;
+            border-radius: 999px;
+            overflow: hidden;
+            margin-top: 12px;
+            height: 34px;
         }
 
-        td form {
-            margin: 0;
+        .progress-fill {
+            background: linear-gradient(90deg, #2563eb, #7c3aed);
+            color: white;
+            text-align: center;
+            padding: 8px 0;
+            font-weight: bold;
+            height: 100%;
+            transition: width 0.4s ease;
         }
 
-            .secondary {
-            background-color: #4b5563;
+        .level-box {
+            margin-top: 20px;
+            padding: 18px;
+            border-left: 5px solid var(--primary);
+            background-color: white;
+            border-radius: 12px;
         }
 
-        .secondary:hover {
-            background-color: #374151;
+        .level-box h3 {
+            margin-top: 0;
+            margin-bottom: 6px;
         }
 
         .actions {
@@ -135,20 +300,80 @@
         }
 
         .actions form {
+            display: inline;
             margin: 0;
         }
 
         .actions .button {
             margin-top: 0;
+            padding: 9px 12px;
+            font-size: 14px;
         }
-        
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 900px) {
+            main {
+                width: 92%;
+                padding: 24px;
+            }
+
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            table {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .topbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            main {
+                width: 94%;
+                margin: 24px auto;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+        }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>Sistema de Controle de Estudos</h1>
-    <p>Aplicação web desenvolvida com Python e Flask</p>
+    <div class="topbar">
+        <div class="brand">
+            <h1>Sistema de Controle de Estudos</h1>
+            <p>Aplicação web desenvolvida com Python, Flask e SQLite</p>
+        </div>
+
+        <nav>
+            <a href="/">Início</a>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/materias">Matérias</a>
+            <a href="/sessoes">Sessões</a>
+        </nav>
+    </div>
 </header>
 
 <main>
