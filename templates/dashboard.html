@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Dashboard de Estudos</h2>
+
+<p>Resumo geral das matérias e sessões de estudo registradas no sistema.</p>
+
+<div class="cards">
+    <div class="card">
+        <h3>{{ total_materias }}</h3>
+        <p>Matérias cadastradas</p>
+    </div>
+
+    <div class="card">
+        <h3>{{ total_sessoes }}</h3>
+        <p>Sessões registradas</p>
+    </div>
+
+    <div class="card">
+        <h3>{{ total_minutos }}</h3>
+        <p>Minutos estudados</p>
+    </div>
+
+    <div class="card">
+        <h3>{{ total_horas }}</h3>
+        <p>Horas estudadas</p>
+    </div>
+</div>
+
+<hr>
+
+<h3>Últimas sessões de estudo</h3>
+
+{% if ultimas_sessoes %}
+    <table>
+        <thead>
+            <tr>
+                <th>Matéria</th>
+                <th>Descrição</th>
+                <th>Duração</th>
+                <th>Data</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sessao in ultimas_sessoes %}
+            <tr>
+                <td>{{ sessao["materia"] }}</td>
+                <td>{{ sessao["descricao"] }}</td>
+                <td>{{ sessao["duracao"] }} min</td>
+                <td>{{ sessao["data"] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>Nenhuma sessão registrada ainda.</p>
+{% endif %}
+
+<br>
+
+<a href="/" class="button">Voltar para início</a>
+
+{% endblock %}

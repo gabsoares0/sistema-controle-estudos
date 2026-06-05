@@ -44,6 +44,48 @@ def criar_tabelas():
 def home():
     return render_template("index.html")
 
+@app.route("/dashboard")
+def dashboard():
+    conexao = conectar_banco()
+    cursor = conexao.cursor()
+
+    cursor.execute("SELECT COUNT(*) AS total FROM materias")
+    total_materias = cursor.fetchone()["total"]
+
+    cursor.execute("SELECT COUNT(*) AS total FROM sessoes_estudo")
+    total_sessoes = cursor.fetchone()["total"]
+
+    cursor.execute("SELECT COALESCE(SUM(duracao), 0) AS total FROM sessoes_estudo")
+    total_minutos = cursor.fetchone()["total"]
+
+    total_horas = round(total_minutos / 60, 2)
+
+    cursor.execute("""
+        SELECT 
+            sessoes_estudo.id,
+            materias.nome AS materia,
+            sessoes_estudo.descricao,
+            sessoes_estudo.duracao,
+            sessoes_estudo.data
+        FROM sessoes_estudo
+        INNER JOIN materias ON materias.id = sessoes_estudo.materia_id
+        ORDER BY sessoes_estudo.id DESC
+        LIMIT 5
+    """)
+
+    ultimas_sessoes = cursor.fetchall()
+
+    conexao.close()
+
+    return render_template(
+        "dashboard.html",
+        total_materias=total_materias,
+        total_sessoes=total_sessoes,
+        total_minutos=total_minutos,
+        total_horas=total_horas,
+        ultimas_sessoes=ultimas_sessoes
+    )
+
 
 @app.route("/materias", methods=["GET", "POST"])
 def materias():
