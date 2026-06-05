@@ -60,6 +60,29 @@ def dashboard():
 
     total_horas = round(total_minutos / 60, 2)
 
+    meta_semanal_minutos = 600
+
+    if meta_semanal_minutos > 0:
+        progresso_percentual = round((total_minutos / meta_semanal_minutos) * 100)
+    else:
+        progresso_percentual = 0
+
+    if progresso_percentual > 100:
+        progresso_percentual = 100
+
+    if total_horas == 0:
+        nivel = "Iniciante"
+        mensagem = "Comece registrando sua primeira sessão de estudo."
+    elif total_horas < 3:
+        nivel = "Estudante em construção"
+        mensagem = "Bom começo. Continue alimentando seu histórico de estudos."
+    elif total_horas < 10:
+        nivel = "Estudante focado"
+        mensagem = "Você está no caminho certo. Continue mantendo a constância."
+    else:
+        nivel = "Estudante disciplinado"
+        mensagem = "Excelente ritmo. Seu desempenho mostra consistência nos estudos."
+
     cursor.execute("""
         SELECT 
             sessoes_estudo.id,
@@ -83,6 +106,10 @@ def dashboard():
         total_sessoes=total_sessoes,
         total_minutos=total_minutos,
         total_horas=total_horas,
+        meta_semanal_minutos=meta_semanal_minutos,
+        progresso_percentual=progresso_percentual,
+        nivel=nivel,
+        mensagem=mensagem,
         ultimas_sessoes=ultimas_sessoes
     )
 

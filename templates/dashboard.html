@@ -28,6 +28,23 @@
     </div>
 </div>
 
+<div class="progress-section">
+    <h3>Meta Semanal de Estudos</h3>
+
+    <p>
+        Meta definida: <strong>{{ meta_semanal_minutos }} minutos</strong>
+    </p>
+
+    <div class="progress-fill" style="width: {{ progresso_percentual }}%">
+    {{ progresso_percentual }}%
+</div>
+
+    <div class="level-box">
+        <h3>{{ nivel }}</h3>
+        <p>{{ mensagem }}</p>
+    </div>
+</div>
+
 <hr>
 
 <h3>Últimas sessões de estudo</h3>
