@@ -116,6 +116,18 @@ def materias():
 
     return render_template("materias.html", materias=lista_materias)
 
+@app.route("/materias/excluir/<int:id>", methods=["POST"])
+def excluir_materia(id):
+    conexao = conectar_banco()
+    cursor = conexao.cursor()
+
+    cursor.execute("DELETE FROM sessoes_estudo WHERE materia_id = ?", (id,))
+    cursor.execute("DELETE FROM materias WHERE id = ?", (id,))
+
+    conexao.commit()
+    conexao.close()
+
+    return redirect(url_for("materias"))
 
 @app.route("/sessoes", methods=["GET", "POST"])
 def sessoes():
@@ -165,6 +177,17 @@ def sessoes():
         data_atual=data_atual
     )
 
+@app.route("/sessoes/excluir/<int:id>", methods=["POST"])
+def excluir_sessao(id):
+    conexao = conectar_banco()
+    cursor = conexao.cursor()
+
+    cursor.execute("DELETE FROM sessoes_estudo WHERE id = ?", (id,))
+
+    conexao.commit()
+    conexao.close()
+
+    return redirect(url_for("sessoes"))
 
 if __name__ == "__main__":
     criar_tabelas()

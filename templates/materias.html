@@ -27,6 +27,7 @@
                 <th>ID</th>
                 <th>Matéria</th>
                 <th>Descrição</th>
+                <th>Ações</th>
             </tr>
         </thead>
         <tbody>
@@ -35,6 +36,11 @@
                 <td>{{ materia["id"] }}</td>
                 <td>{{ materia["nome"] }}</td>
                 <td>{{ materia["descricao"] }}</td>
+                   <td>
+        <form method="POST" action="/materias/excluir/{{ materia['id'] }}" onsubmit="return confirm('Deseja realmente excluir esta matéria?');">
+            <button type="submit" class="button danger">Excluir</button>
+                </form>
+              </td>
             </tr>
             {% endfor %}
         </tbody>
