@@ -356,6 +356,43 @@
                 padding: 10px;
             }
         }
+
+            .mini-progress {
+            width: 100%;
+            min-width: 160px;
+            background-color: #e5e7eb;
+            border-radius: 999px;
+            overflow: hidden;
+            height: 28px;
+        }
+
+        .mini-progress-fill {
+            background: linear-gradient(90deg, #2563eb, #7c3aed);
+            color: white;
+            height: 100%;
+            text-align: center;
+            font-size: 13px;
+            font-weight: bold;
+            line-height: 28px;
+            transition: width 0.4s ease;
+        }
+
+        small {
+            color: var(--muted);
+        }
+
+        .empty-state {
+            background-color: #f9fafb;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+            text-align: center;
+        }
+
+        .empty-state h3 {
+            margin-top: 0;
+        }
+        
     </style>
 </head>
 <body>
@@ -367,12 +404,13 @@
             <p>Aplicação web desenvolvida com Python, Flask e SQLite</p>
         </div>
 
-        <nav>
-            <a href="/">Início</a>
-            <a href="/dashboard">Dashboard</a>
-            <a href="/materias">Matérias</a>
-            <a href="/sessoes">Sessões</a>
-        </nav>
+     <nav>
+         <a href="/">Início</a>
+         <a href="/dashboard">Dashboard</a>
+         <a href="/relatorios">Relatórios</a>
+         <a href="/materias">Matérias</a>
+         <a href="/sessoes">Sessões</a>
+     </nav>
     </div>
 </header>
 

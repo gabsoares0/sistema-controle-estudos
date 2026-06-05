@@ -113,6 +113,57 @@ def dashboard():
         ultimas_sessoes=ultimas_sessoes
     )
 
+@app.route("/relatorios")
+def relatorios():
+    conexao = conectar_banco()
+    cursor = conexao.cursor()
+
+    cursor.execute("""
+        SELECT 
+            materias.id,
+            materias.nome AS materia,
+            COALESCE(SUM(sessoes_estudo.duracao), 0) AS total_minutos,
+            COUNT(sessoes_estudo.id) AS total_sessoes,
+            COALESCE(AVG(sessoes_estudo.duracao), 0) AS media_minutos
+        FROM materias
+        LEFT JOIN sessoes_estudo 
+            ON materias.id = sessoes_estudo.materia_id
+        GROUP BY materias.id, materias.nome
+        ORDER BY total_minutos DESC
+    """)
+
+    resultados = cursor.fetchall()
+    conexao.close()
+
+    total_geral_minutos = sum(item["total_minutos"] for item in resultados)
+    total_geral_horas = round(total_geral_minutos / 60, 2)
+
+    relatorios = []
+
+    for item in resultados:
+        total_minutos = item["total_minutos"]
+        total_horas = round(total_minutos / 60, 2)
+
+        if total_geral_minutos > 0:
+            percentual = round((total_minutos / total_geral_minutos) * 100)
+        else:
+            percentual = 0
+
+        relatorios.append({
+            "materia": item["materia"],
+            "total_minutos": total_minutos,
+            "total_horas": total_horas,
+            "total_sessoes": item["total_sessoes"],
+            "media_minutos": round(item["media_minutos"], 1),
+            "percentual": percentual
+        })
+
+    return render_template(
+        "relatorios.html",
+        relatorios=relatorios,
+        total_geral_minutos=total_geral_minutos,
+        total_geral_horas=total_geral_horas
+    )
 
 @app.route("/materias", methods=["GET", "POST"])
 def materias():

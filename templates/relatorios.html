@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Relatórios por Matéria</h2>
+
+<p>
+    Esta página apresenta uma visão geral do tempo estudado em cada matéria,
+    ajudando o estudante a identificar onde está dedicando mais ou menos esforço.
+</p>
+
+<div class="cards">
+    <div class="card">
+        <h3>{{ total_geral_minutos }}</h3>
+        <p>Minutos totais</p>
+    </div>
+
+    <div class="card">
+        <h3>{{ total_geral_horas }}</h3>
+        <p>Horas totais</p>
+    </div>
+</div>
+
+<hr>
+
+{% if relatorios %}
+
+<table>
+    <thead>
+        <tr>
+            <th>Matéria</th>
+            <th>Total estudado</th>
+            <th>Sessões</th>
+            <th>Média por sessão</th>
+            <th>Participação</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for item in relatorios %}
+        <tr>
+            <td>
+                <strong>{{ item["materia"] }}</strong>
+            </td>
+
+            <td>
+                {{ item["total_minutos"] }} min
+                <br>
+                <small>{{ item["total_horas"] }} horas</small>
+            </td>
+
+            <td>
+                {{ item["total_sessoes"] }}
+            </td>
+
+            <td>
+                {{ item["media_minutos"] }} min
+            </td>
+
+            <td>
+                <div class="mini-progress">
+                    <div class="mini-progress-fill" style="width: {{ item['percentual'] }}%">
+                        {{ item["percentual"] }}%
+                    </div>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% else %}
+
+<div class="empty-state">
+    <h3>Nenhuma matéria cadastrada ainda</h3>
+    <p>Cadastre matérias e sessões de estudo para visualizar os relatórios.</p>
+    <a href="/materias" class="button">Cadastrar matéria</a>
+</div>
+
+{% endif %}
+
+<br>
+
+<a href="/dashboard" class="button secondary">Voltar para dashboard</a>
+
+{% endblock %}
