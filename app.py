@@ -116,6 +116,36 @@ def materias():
 
     return render_template("materias.html", materias=lista_materias)
 
+@app.route("/materias/editar/<int:id>", methods=["GET", "POST"])
+def editar_materia(id):
+    conexao = conectar_banco()
+    cursor = conexao.cursor()
+
+    if request.method == "POST":
+        nome = request.form["nome"]
+        descricao = request.form["descricao"]
+
+        cursor.execute("""
+            UPDATE materias
+            SET nome = ?, descricao = ?
+            WHERE id = ?
+        """, (nome, descricao, id))
+
+        conexao.commit()
+        conexao.close()
+
+        return redirect(url_for("materias"))
+
+    cursor.execute("SELECT * FROM materias WHERE id = ?", (id,))
+    materia = cursor.fetchone()
+
+    conexao.close()
+
+    if materia is None:
+        return redirect(url_for("materias"))
+
+    return render_template("editar_materia.html", materia=materia)
+
 @app.route("/materias/excluir/<int:id>", methods=["POST"])
 def excluir_materia(id):
     conexao = conectar_banco()
@@ -175,6 +205,45 @@ def sessoes():
         materias=lista_materias,
         sessoes=lista_sessoes,
         data_atual=data_atual
+    )
+
+@app.route("/sessoes/editar/<int:id>", methods=["GET", "POST"])
+def editar_sessao(id):
+    conexao = conectar_banco()
+    cursor = conexao.cursor()
+
+    if request.method == "POST":
+        materia_id = request.form["materia_id"]
+        descricao = request.form["descricao"]
+        duracao = request.form["duracao"]
+        data_estudo = request.form["data"]
+
+        cursor.execute("""
+            UPDATE sessoes_estudo
+            SET materia_id = ?, descricao = ?, duracao = ?, data = ?
+            WHERE id = ?
+        """, (materia_id, descricao, duracao, data_estudo, id))
+
+        conexao.commit()
+        conexao.close()
+
+        return redirect(url_for("sessoes"))
+
+    cursor.execute("SELECT * FROM sessoes_estudo WHERE id = ?", (id,))
+    sessao = cursor.fetchone()
+
+    cursor.execute("SELECT * FROM materias ORDER BY nome ASC")
+    materias = cursor.fetchall()
+
+    conexao.close()
+
+    if sessao is None:
+        return redirect(url_for("sessoes"))
+
+    return render_template(
+        "editar_sessao.html",
+        sessao=sessao,
+        materias=materias
     )
 
 @app.route("/sessoes/excluir/<int:id>", methods=["POST"])

@@ -36,11 +36,15 @@
                 <td>{{ materia["id"] }}</td>
                 <td>{{ materia["nome"] }}</td>
                 <td>{{ materia["descricao"] }}</td>
-                   <td>
+              <td>
+    <div class="actions">
+        <a href="/materias/editar/{{ materia['id'] }}" class="button secondary">Editar</a>
+
         <form method="POST" action="/materias/excluir/{{ materia['id'] }}" onsubmit="return confirm('Deseja realmente excluir esta matéria?');">
             <button type="submit" class="button danger">Excluir</button>
-                </form>
-              </td>
+        </form>
+    </div>
+</td>
             </tr>
             {% endfor %}
         </tbody>

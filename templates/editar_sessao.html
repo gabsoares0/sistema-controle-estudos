@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Editar Sessão de Estudo</h2>
+
+<p>Altere as informações da sessão de estudo selecionada.</p>
+
+<form method="POST" action="/sessoes/editar/{{ sessao['id'] }}">
+    <label>Matéria:</label>
+    <select name="materia_id" required>
+        {% for materia in materias %}
+            <option value="{{ materia['id'] }}" {% if materia['id'] == sessao['materia_id'] %}selected{% endif %}>
+                {{ materia['nome'] }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <label>Descrição do estudo:</label>
+    <textarea name="descricao" rows="3" required>{{ sessao['descricao'] }}</textarea>
+
+    <label>Duração em minutos:</label>
+    <input type="number" name="duracao" min="1" value="{{ sessao['duracao'] }}" required>
+
+    <label>Data:</label>
+    <input type="date" name="data" value="{{ sessao['data'] }}" required>
+
+    <button type="submit" class="button">Salvar alterações</button>
+</form>
+
+<br>
+
+<a href="/sessoes" class="button secondary">Cancelar</a>
+
+{% endblock %}

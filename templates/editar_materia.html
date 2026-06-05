@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Editar Matéria</h2>
+
+<p>Altere as informações da matéria selecionada.</p>
+
+<form method="POST" action="/materias/editar/{{ materia['id'] }}">
+    <label>Nome da matéria:</label>
+    <input type="text" name="nome" value="{{ materia['nome'] }}" required>
+
+    <label>Descrição:</label>
+    <textarea name="descricao" rows="3">{{ materia['descricao'] }}</textarea>
+
+    <button type="submit" class="button">Salvar alterações</button>
+</form>
+
+<br>
+
+<a href="/materias" class="button secondary">Cancelar</a>
+
+{% endblock %}

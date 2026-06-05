@@ -59,11 +59,15 @@
                 <td>{{ sessao["descricao"] }}</td>
                 <td>{{ sessao["duracao"] }} min</td>
                 <td>{{ sessao["data"] }}</td>
-                   <td>
+                  <td>
+    <div class="actions">
+        <a href="/sessoes/editar/{{ sessao['id'] }}" class="button secondary">Editar</a>
+
           <form method="POST" action="/sessoes/excluir/{{ sessao['id'] }}" onsubmit="return confirm('Deseja realmente excluir esta sessão?');">
             <button type="submit" class="button danger">Excluir</button>
-          </form>
-            </td>
+        </form>
+    </div>
+</td>
             </tr>
             {% endfor %}
         </tbody>
