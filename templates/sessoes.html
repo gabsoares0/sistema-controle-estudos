@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Registro de Sessões de Estudo</h2>
+
+<p>Use o formulário abaixo para registrar quanto tempo você estudou cada matéria.</p>
+
+{% if materias %}
+
+<form method="POST" action="/sessoes">
+    <label>Matéria:</label>
+    <select name="materia_id" required>
+        {% for materia in materias %}
+            <option value="{{ materia['id'] }}">{{ materia['nome'] }}</option>
+        {% endfor %}
+    </select>
+
+    <label>Descrição do estudo:</label>
+    <textarea name="descricao" rows="3" required></textarea>
+
+    <label>Duração em minutos:</label>
+    <input type="number" name="duracao" min="1" required>
+
+    <label>Data:</label>
+    <input type="date" name="data" value="{{ data_atual }}" required>
+
+    <button type="submit" class="button">Registrar sessão</button>
+</form>
+
+{% else %}
+
+<p>Você precisa cadastrar uma matéria antes de registrar sessões de estudo.</p>
+<a href="/materias" class="button">Cadastrar matéria</a>
+
+{% endif %}
+
+<hr>
+
+<h3>Sessões registradas</h3>
+
+{% if sessoes %}
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Matéria</th>
+                <th>Descrição</th>
+                <th>Duração</th>
+                <th>Data</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sessao in sessoes %}
+            <tr>
+                <td>{{ sessao["id"] }}</td>
+                <td>{{ sessao["materia"] }}</td>
+                <td>{{ sessao["descricao"] }}</td>
+                <td>{{ sessao["duracao"] }} min</td>
+                <td>{{ sessao["data"] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>Nenhuma sessão registrada ainda.</p>
+{% endif %}
+
+<br>
+
+<a href="/" class="button">Voltar para início</a>
+
+{% endblock %}

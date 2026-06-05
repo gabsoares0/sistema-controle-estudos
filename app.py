@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
+from datetime import date
 
 app = Flask(__name__)
 
@@ -21,6 +22,17 @@ def criar_tabelas():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             nome TEXT NOT NULL,
             descricao TEXT
+        )
+    """)
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS sessoes_estudo (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            materia_id INTEGER NOT NULL,
+            descricao TEXT NOT NULL,
+            duracao INTEGER NOT NULL,
+            data TEXT NOT NULL,
+            FOREIGN KEY (materia_id) REFERENCES materias(id)
         )
     """)
 
@@ -61,6 +73,55 @@ def materias():
     conexao.close()
 
     return render_template("materias.html", materias=lista_materias)
+
+
+@app.route("/sessoes", methods=["GET", "POST"])
+def sessoes():
+    conexao = conectar_banco()
+    cursor = conexao.cursor()
+
+    if request.method == "POST":
+        materia_id = request.form["materia_id"]
+        descricao = request.form["descricao"]
+        duracao = request.form["duracao"]
+        data_estudo = request.form["data"]
+
+        cursor.execute("""
+            INSERT INTO sessoes_estudo (materia_id, descricao, duracao, data)
+            VALUES (?, ?, ?, ?)
+        """, (materia_id, descricao, duracao, data_estudo))
+
+        conexao.commit()
+        conexao.close()
+
+        return redirect(url_for("sessoes"))
+
+    cursor.execute("SELECT * FROM materias ORDER BY nome ASC")
+    lista_materias = cursor.fetchall()
+
+    cursor.execute("""
+        SELECT 
+            sessoes_estudo.id,
+            materias.nome AS materia,
+            sessoes_estudo.descricao,
+            sessoes_estudo.duracao,
+            sessoes_estudo.data
+        FROM sessoes_estudo
+        INNER JOIN materias ON materias.id = sessoes_estudo.materia_id
+        ORDER BY sessoes_estudo.id DESC
+    """)
+    lista_sessoes = cursor.fetchall()
+
+    conexao.close()
+
+    data_atual = date.today().isoformat()
+
+    return render_template(
+        "sessoes.html",
+        materias=lista_materias,
+        sessoes=lista_sessoes,
+        data_atual=data_atual
+    )
 
 
 if __name__ == "__main__":
